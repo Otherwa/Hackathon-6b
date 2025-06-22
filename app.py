@@ -74,15 +74,28 @@ try:
                 for file in txt_files:
                     remote_file_path = f"{folder_path}/{file}"
                     local_path = download_ftp_file(ftp, remote_file_path)
+
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
-
-                        def stream_text(text):
-                            for line in text.splitlines():
-                                yield line + "\n"
-                                time.sleep(0.02)
-                        
-                        st.write_stream(stream_text(txt))
+                    
+                    # Only keep content after the "Unstructured Data" marker (case-insensitive)
+                    marker = "## Unstructured Data"
+                    split_idx = txt.lower().find(marker)
+                    
+                    if split_idx != -1:
+                        content_to_stream = txt[split_idx + len(marker):].strip()
+                    else:
+                        content_to_stream = txt  # fallback: stream everything
+                    
+                    # Define stream generator
+                    def stream_text(text):
+                        for line in text.splitlines():
+                            yield line + "\n"
+                            time.sleep(0.02)
+                    
+                    # Display with typing effect
+                    with st.chat_message("assistant"):
+                        st.write_stream(lambda: stream_text(content_to_stream))
 
 
                     with open(local_path, "rb") as dl:
