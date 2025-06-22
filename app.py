@@ -83,7 +83,7 @@ try:
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         full_text = f.read()
 
-                    keyword = "structured data"
+                    keyword = "unstructured data"
                     idx = full_text.lower().find(keyword)
                     content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
                     
