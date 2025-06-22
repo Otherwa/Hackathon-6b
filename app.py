@@ -74,7 +74,7 @@ try:
             txt_files = [f for f in files if f.lower().endswith(".txt")]
             csv_files = [f for f in files if f.lower().endswith(".csv")]
 
-            cols = st.cols(2)
+            cols = st.columns(2)
 
             with cols[0]:
                 st.subheader("📄 Text Files")
