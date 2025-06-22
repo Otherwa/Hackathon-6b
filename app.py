@@ -87,8 +87,8 @@ try:
                     idx = full_text.lower().find(keyword)
                     content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
 
-                    with st.chat_message("assistant"):
-                        st.write_stream(lambda: stream_text_lines(content))
+                    
+                    st.write_stream(lambda: stream_text_lines(content))
 
                     with open(local_path, "rb") as dl:
                         st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
