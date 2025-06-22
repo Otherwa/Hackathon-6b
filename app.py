@@ -54,7 +54,7 @@ try:
     if not folders:
         st.warning("No folders found inside /files.")
     else:
-        selected_folder = st.selectbox("📁 Select a folder:", folders[1:])
+        selected_folder = st.selectbox("📁 Select a folder:", folders[2:])
 
         if selected_folder:
             folder_path = os.path.join(ROOT_DIR, selected_folder).replace("\\", "/")
