@@ -79,7 +79,7 @@ try:
                         txt = f.read()
                     
                     # Only keep content after the "Unstructured Data" marker (case-insensitive)
-                    marker = "## Unstructured Data"
+                    marker = "unstructured data"
                     split_idx = txt.lower().find(marker)
                     
                     if split_idx != -1:
