@@ -74,41 +74,45 @@ try:
             txt_files = [f for f in files if f.lower().endswith(".txt")]
             csv_files = [f for f in files if f.lower().endswith(".csv")]
 
-            st.subheader("📄 Text Files")
-            if txt_files:
-                for file in txt_files:
-                    remote_file_path = f"{folder_path}/{file}"
-                    local_path = download_ftp_file(ftp, remote_file_path)
+            cols = st.cols(2)
 
-                    with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
-                        full_text = f.read()
-
-                    keyword = "unstructured data"
-                    idx = full_text.lower().find(keyword)
-                    content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
-                    
-                    st.write_stream(stream_text_lines(content))
-
-                    with open(local_path, "rb") as dl:
-                        st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
-            else:
-                st.info("No .txt files found.")
-
-            st.subheader("📊 CSV Files")
-            if csv_files:
-                for file in csv_files:
-                    remote_file_path = f"{folder_path}/{file}"
-                    local_path = download_ftp_file(ftp, remote_file_path)
-                    try:
-                        df = pd.read_csv(local_path)
-                        st.write(f"**{file}**")
-                        st.dataframe(df, use_container_width=True)
+            with cols[0]:
+                st.subheader("📄 Text Files")
+                if txt_files:
+                    for file in txt_files:
+                        remote_file_path = f"{folder_path}/{file}"
+                        local_path = download_ftp_file(ftp, remote_file_path)
+    
+                        with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
+                            full_text = f.read()
+    
+                        keyword = "unstructured data"
+                        idx = full_text.lower().find(keyword)
+                        content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
+                        
+                        st.write_stream(stream_text_lines(content))
+    
                         with open(local_path, "rb") as dl:
                             st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
-                    except Exception as e:
-                        st.error(f"❌ Could not read {file}: {e}")
-            else:
-                st.info("No .csv files found.")
+                else:
+                    st.info("No .txt files found.")
+
+            with cols[1]:
+                st.subheader("📊 CSV Files")
+                if csv_files:
+                    for file in csv_files:
+                        remote_file_path = f"{folder_path}/{file}"
+                        local_path = download_ftp_file(ftp, remote_file_path)
+                        try:
+                            df = pd.read_csv(local_path)
+                            st.write(f"**{file}**")
+                            st.dataframe(df, use_container_width=True)
+                            with open(local_path, "rb") as dl:
+                                st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
+                        except Exception as e:
+                            st.error(f"❌ Could not read {file}: {e}")
+                else:
+                    st.info("No .csv files found.")
 
     ftp.quit()
 
