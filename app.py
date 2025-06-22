@@ -11,7 +11,7 @@ FTP_USER = "epiz_31577921"
 FTP_PASS = "v2nNu6o2HTRmT"
 ROOT_DIR = "/files"
 
-# === FTP Functions ===
+# === FTP Utilities ===
 def connect_ftp():
     ftp = FTP()
     ftp.set_pasv(True)
@@ -42,11 +42,16 @@ def download_ftp_file(ftp, remote_path):
         ftp.retrbinary("RETR " + remote_path, f.write)
     return tmp_file.name
 
-# === Streamlit Setup ===
+def stream_text_lines(text):
+    for line in text.splitlines():
+        yield line + "\n"
+        time.sleep(0.02)
+
+# === Streamlit UI ===
 st.set_page_config(page_title="Tendor Document Analysis", layout="wide")
 st.title("📑 Tendor Document Analysis")
 
-# Refresh button logic
+# Refresh logic
 if st.button("🔄 Refresh FTP"):
     st.session_state.pop("ftp_folders", None)
 
@@ -60,7 +65,7 @@ try:
     if not folders:
         st.warning("No folders found inside /files.")
     else:
-        selected_folder = st.selectbox("📁 Select a folder:", folders[2:])
+        selected_folder = st.selectbox("📁 Select a folder:", folders)
 
         if selected_folder:
             folder_path = os.path.join(ROOT_DIR, selected_folder).replace("\\", "/")
@@ -74,21 +79,22 @@ try:
                 for file in txt_files:
                     remote_file_path = f"{folder_path}/{file}"
                     local_path = download_ftp_file(ftp, remote_file_path)
+
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
 
-                        def stream_text(text):
-                            for line in text.splitlines():
-                                yield line + "\n"
-                                time.sleep(0.02)
-                        
-                        st.write_stream(stream_text(txt))
+                    # Extract only content after "Structured Data"
+                    keyword = "structured data"
+                    idx = txt.lower().find(keyword)
+                    extracted = txt[idx + len(keyword):].strip() if idx != -1 else txt
 
+                    with st.chat_message("assistant"):
+                        st.write_stream(lambda: stream_text_lines(extracted))
 
                     with open(local_path, "rb") as dl:
                         st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
             else:
-                st.write("No .txt files found.")
+                st.info("No .txt files found.")
 
             st.subheader("📊 CSV Files")
             if csv_files:
@@ -104,7 +110,7 @@ try:
                     except Exception as e:
                         st.error(f"❌ Could not read {file}: {e}")
             else:
-                st.write("No .csv files found.")
+                st.info("No .csv files found.")
 
     ftp.quit()
 
