@@ -81,10 +81,6 @@ try:
                                 yield line + "\n"
                                 time.sleep(0.01)  # adjust for desired speed
                         
-                        # Inside your loop for each .txt file:
-                        with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
-                            txt = f.read()
-                        
                         with st.chat_message("assistant"):
                             st.write_stream(lambda: stream_text(txt))
 
