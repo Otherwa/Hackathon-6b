@@ -76,7 +76,7 @@ try:
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
                     with st.chat_message("assistant"):
-                        st.write_stream(lambda: txt, speed=30)
+                        st.write_stream(lambda: txt)
                     with open(local_path, "rb") as dl:
                         st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
             else:
