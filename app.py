@@ -79,10 +79,9 @@ try:
                         def stream_text(text):
                             for line in text.splitlines():
                                 yield line + "\n"
-                                time.sleep(0.01)  # adjust for desired speed
+                                time.sleep(0.02)
                         
-                        with st.chat_message("assistant"):
-                            st.write_stream(stream_text(txt))
+                        st.write_stream(stream_text(txt))
 
 
                     with open(local_path, "rb") as dl:
