@@ -11,7 +11,7 @@ FTP_USER = "epiz_31577921"
 FTP_PASS = "v2nNu6o2HTRmT"
 ROOT_DIR = "/files"
 
-# === FTP Utilities ===
+# === FTP Functions ===
 def connect_ftp():
     ftp = FTP()
     ftp.set_pasv(True)
@@ -47,16 +47,16 @@ def stream_text_lines(text):
         yield line + "\n"
         time.sleep(0.02)
 
-# === Streamlit UI ===
+# === Streamlit Setup ===
 st.set_page_config(page_title="Tendor Document Analysis", layout="wide")
 st.title("📑 Tendor Document Analysis")
 
-# Refresh logic
 if st.button("🔄 Refresh FTP"):
     st.session_state.pop("ftp_folders", None)
 
 try:
     ftp = connect_ftp()
+
     if "ftp_folders" not in st.session_state:
         st.session_state.ftp_folders = list_folders(ftp, ROOT_DIR)
 
@@ -81,15 +81,14 @@ try:
                     local_path = download_ftp_file(ftp, remote_file_path)
 
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
-                        txt = f.read()
+                        full_text = f.read()
 
-                    # Extract only content after "Structured Data"
                     keyword = "structured data"
-                    idx = txt.lower().find(keyword)
-                    extracted = txt[idx + len(keyword):].strip() if idx != -1 else txt
+                    idx = full_text.lower().find(keyword)
+                    content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
 
                     with st.chat_message("assistant"):
-                        st.write_stream(lambda: stream_text_lines(extracted))
+                        st.write_stream(lambda: stream_text_lines(content))
 
                     with open(local_path, "rb") as dl:
                         st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
