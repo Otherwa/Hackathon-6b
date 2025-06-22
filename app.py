@@ -21,7 +21,15 @@ def list_folders(ftp, base_path):
     ftp.cwd(base_path)
     items = []
     ftp.retrlines("LIST", items.append)
-    folders = [line.split()[-1] for line in items if line.startswith("d")]
+
+    # Extract folder names from lines that begin with 'd'
+    folders = []
+    for line in items:
+        if line.startswith("d"):
+            # Folder name is everything after the last space in permissions block
+            parts = line.split(maxsplit=8)  # 9 fields: permissions, links, owner, group, size, month, day, time/year, name
+            if len(parts) >= 9:
+                folders.append(parts[8])
     return folders
 
 def list_files(ftp, folder_path, extensions=(".txt", ".csv")):
