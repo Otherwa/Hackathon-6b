@@ -86,8 +86,6 @@ try:
                     keyword = "structured data"
                     idx = full_text.lower().find(keyword)
                     content = full_text[idx + len(keyword):].strip() if idx != -1 else full_text
-
-                    st.write(content)
                     
                     st.write_stream(stream_text_lines(content))
 
