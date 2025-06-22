@@ -82,7 +82,7 @@ try:
                                 time.sleep(0.01)  # adjust for desired speed
                         
                         with st.chat_message("assistant"):
-                            st.write_stream(lambda: stream_text(txt))
+                            st.write_stream(stream_text(txt))
 
 
                     with open(local_path, "rb") as dl:
