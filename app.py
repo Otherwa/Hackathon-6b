@@ -74,18 +74,15 @@ try:
                 for file in txt_files:
                     remote_file_path = f"{folder_path}/{file}"
                     local_path = download_ftp_file(ftp, remote_file_path)
-
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
-                    
-                        # Define stream generator
+
                         def stream_text(text):
                             for line in text.splitlines():
                                 yield line + "\n"
                                 time.sleep(0.02)
                         
-                        # Display with typing effect
-                        st.write_stream(lambda: stream_text(txt))
+                        st.write_stream(stream_text(txt))
 
 
                     with open(local_path, "rb") as dl:
