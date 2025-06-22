@@ -78,14 +78,13 @@ try:
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
                     
-                    # Define stream generator
-                    def stream_text(text):
-                        for line in text.splitlines():
-                            yield line + "\n"
-                            time.sleep(0.02)
-                    
-                    # Display with typing effect
-                    with st.chat_message("assistant"):
+                        # Define stream generator
+                        def stream_text(text):
+                            for line in text.splitlines():
+                                yield line + "\n"
+                                time.sleep(0.02)
+                        
+                        # Display with typing effect
                         st.write_stream(lambda: stream_text(txt))
 
 
