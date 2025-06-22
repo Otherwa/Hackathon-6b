@@ -75,8 +75,7 @@ try:
                     local_path = download_ftp_file(ftp, remote_file_path)
                     with open(local_path, "r", encoding="utf-8", errors="ignore") as f:
                         txt = f.read()
-                    with st.chat_message("assistant"):
-                        st.write_stream(lambda: txt)
+                        st.write_stream(txt)
                     with open(local_path, "rb") as dl:
                         st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
             else:
