@@ -79,7 +79,7 @@ try:
             cols = st.columns(2)
 
             with cols[0]:
-                st.subheader("📄 Text Files")
+                st.subheader("📄 Analysis")
                 if txt_files:
                     for file in txt_files:
                         remote_file_path = f"{folder_path}/{file}"
@@ -100,13 +100,13 @@ try:
                     st.info("No .txt files found.")
 
             with cols[1]:
-                st.subheader("📊 CSV Files")
+                st.subheader("📊 KPI's")
                 if csv_files:
                     for file in csv_files:
                         remote_file_path = f"{folder_path}/{file}"
                         local_path = download_ftp_file(ftp, remote_file_path)
                         try:
-                            df = pd.read_csv(local_path)
+                            df = pd.read_csv(local_path,index=False)
                             file = file.replace("_"," ")
                             file = file.replace(".csv","")
                             file = file.capitalize()
