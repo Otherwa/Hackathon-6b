@@ -111,7 +111,7 @@ try:
                             file = file.replace(".csv","")
                             file = file.capitalize()
                             st.write(f"**{file}**")
-                            st.dataframe(df, use_container_width=True)
+                            st.dataframe(df, use_container_width=True,hide_index=True)
                             with open(local_path, "rb") as dl:
                                 st.download_button(f"⬇️ Download", dl.read(), file_name=file)
                         except Exception as e:
