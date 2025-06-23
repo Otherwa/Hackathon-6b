@@ -51,7 +51,7 @@ def stream_text_lines(text):
 st.image('https://imgs.search.brave.com/zsgwZRnan-oN5BLVpTeXzQLV4fo-PrClNbBqXFaMyFM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvZW4vdGh1bWIv/ZS9lMi9Bc2lhbl9w/YWludHNfbG9nby5z/dmcvNTEycHgtQXNp/YW5fcGFpbnRzX2xv/Z28uc3ZnLnBuZw', width=168)
 
 st.set_page_config(page_title="Tendor Document Analysis", layout="wide")
-st.title("📑 Tendor Document Analysis")
+st.title("📑 Tender Document Analysis")
 
 if st.button("🔄 Refresh FTP"):
     st.session_state.pop("ftp_folders", None)
