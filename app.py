@@ -113,7 +113,7 @@ try:
                             st.write(f"**{file}**")
                             st.dataframe(df, use_container_width=True)
                             with open(local_path, "rb") as dl:
-                                st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
+                                st.download_button(f"⬇️ Download", dl.read(), file_name=file)
                         except Exception as e:
                             st.error(f"❌ Could not read {file}: {e}")
                 else:
