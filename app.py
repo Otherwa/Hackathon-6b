@@ -95,7 +95,7 @@ try:
                         st.write_stream(stream_text_lines(content))
     
                         with open(local_path, "rb") as dl:
-                            st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
+                            st.download_button(f"⬇️ Download", dl.read(), file_name=file)
                 else:
                     st.info("No .txt files found.")
 
@@ -107,7 +107,10 @@ try:
                         local_path = download_ftp_file(ftp, remote_file_path)
                         try:
                             df = pd.read_csv(local_path)
-                            st.write(f"**{file}**")
+                            file = file.replace("_"," ")
+                            file = file.replace(".csv","")
+                            file = file.capitalize()
+                            st.write(f"**{}**")
                             st.dataframe(df, use_container_width=True)
                             with open(local_path, "rb") as dl:
                                 st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
