@@ -110,7 +110,7 @@ try:
                             file = file.replace("_"," ")
                             file = file.replace(".csv","")
                             file = file.capitalize()
-                            st.write(f"**{}**")
+                            st.write(f"**{file}**")
                             st.dataframe(df, use_container_width=True)
                             with open(local_path, "rb") as dl:
                                 st.download_button(f"⬇️ Download {file}", dl.read(), file_name=file)
