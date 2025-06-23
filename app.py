@@ -106,7 +106,7 @@ try:
                         remote_file_path = f"{folder_path}/{file}"
                         local_path = download_ftp_file(ftp, remote_file_path)
                         try:
-                            df = pd.read_csv(local_path, index=False)
+                            df = pd.read_csv(local_path, index_col=False)
                             file = file.replace("_"," ")
                             file = file.replace(".csv","")
                             file = file.capitalize()
